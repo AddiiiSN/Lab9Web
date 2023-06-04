@@ -32,7 +32,17 @@ $routes->set404Override();
 $routes->get('/', 'Page::beranda');
 $routes->get('/about', 'Page::about');
 $routes->get('/contact', 'Page::contact');
-$routes->get('/artikel', 'Page::artikel');
+$routes->get('/artikel', 'Artikel::index');
+$routes->get('/artikel/(:any)', 'Artikel::view/$1');
+$routes->get('/user/login', 'User::login');
+$routes->group('admin', ['filter' => 'auth'], function ($routes) {
+    $routes->get('artikel', 'Artikel::admin_index');
+    $routes->add('artikel/add', 'Artikel::add');
+    $routes->add('artikel/edit/(:any)', 'Artikel::edit/$1');
+    $routes->get('artikel/delete/(:any)', 'Artikel::delete/$1');
+});
+
+// Gambar 13.3 Config Routes
 
 /*
  * --------------------------------------------------------------------
@@ -47,6 +57,6 @@ $routes->get('/artikel', 'Page::artikel');
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+if (is_file(APPPATH.'Config/'.ENVIRONMENT.'/Routes.php')) {
+    require APPPATH.'Config/'.ENVIRONMENT.'/Routes.php';
 }
